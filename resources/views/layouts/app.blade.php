@@ -21,7 +21,7 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-dark bg-success shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
@@ -37,8 +37,11 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route($navbarItem->route) }}">{{ $navbarItem->name }}</a>
                         </li>
-                        @endforeach
 
+                        @endforeach
+                        <li class="nav-item">
+                            <a class="nav-link" href="/categories">categories</a>
+                        </li>
 
                     </ul>
 

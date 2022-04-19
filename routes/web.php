@@ -3,9 +3,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\FrontController;
+use Illuminate\Support\Facades\Auth;
 
 
 
@@ -23,11 +25,13 @@ use App\Http\Controllers\FrontController;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::resource('products', ProductController::class);
-
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::resource('products', ProductController::class)->middleware('CustomAuth');
+Route::resource('categories', CategoryController::class)->middleware('CustomAuth');
+
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->middleware('CustomAuth')->name('home');
 Route::get('admin/home', [HomeController::class, 'adminHome'])->name('admin.home')->middleware('is_admin');
 Route::get('home', [FrontController::class, 'home'])->name('home');
 // Route::get('products', [FrontController::class, 'products'])->name('products.index');
