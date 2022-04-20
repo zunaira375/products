@@ -3,14 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Yajra\DataTables\Contracts\DataTable;
 use Yajra\DataTables\Facades\DataTables;
 
+
 class CategoryController extends Controller
 {
+    public function add_category()
+    {
+        $category = new Category();
+        $category->name = 'asima';
+        $category->detail = 'abcdefgh';
+        $category->save();
+    }
     /**
      * Display a listing of the resource.
      *

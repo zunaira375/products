@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
@@ -16,6 +17,16 @@ use Yajra\DataTables\DataTables as DataTablesDataTables;
 
 class ProductController extends Controller
 {
+    public function add_product($id)
+    {
+        $category = Category::find($id);
+
+        $product = new Product();
+        $product->name = 'herbal shampoo';
+        $product->detail = 'for smooth and long hairs..';
+        $product->cat = 'cat 3';
+        $category->product()->save($product);
+    }
 
     public function index(Request $request)
 
@@ -74,6 +85,7 @@ class ProductController extends Controller
             $product->name = $request->name;
 
             $product->detail = $request->detail;
+
             $product->save();
 
             return redirect()->route('products.index')
@@ -124,6 +136,8 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
+
+
      */
     public function update(Request $request, Product $product)
     {
