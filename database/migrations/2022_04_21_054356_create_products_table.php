@@ -15,12 +15,11 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->text('detail');
-
-            $table->unsignedBigInteger('cat_id');
-            $table->foreign('cat_id')->references('id')->on('categories');
+            $table->string("name")->default('');
+            $table->text("detail")->nullable();
+            $table->integer("cat_id")->unsigned();
             $table->timestamps();
+            $table->foreign("cat_id")->references("id")->on("categories")->cascadeOnUpdate()->cascadeOnDelete();
         });
     }
 

@@ -25,8 +25,8 @@ use Illuminate\Support\Facades\Auth;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('add-category', [CategoryController::class, 'add_category'])->name('add_category');
-Route::get('add-product/{id}', [ProductController::class, 'add_product'])->name('add_product');
+// Route::get('add-category', [CategoryController::class, 'add_category'])->name('add_category');
+// Route::get('add-product/{id}', [ProductController::class, 'add_product'])->name('add_product');
 
 Auth::routes();
 

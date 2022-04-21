@@ -10,27 +10,18 @@ use Illuminate\Support\Facades\Input;
 use Yajra\DataTables\Contracts\DataTable;
 use Yajra\DataTables\Facades\DataTables;
 
-
+use Illuminate\Support\Facades\Auth;
 
 
 use Yajra\DataTables\DataTables as DataTablesDataTables;
 
 class ProductController extends Controller
 {
-    public function add_product($id)
-    {
-        $category = Category::find($id);
-
-        $product = new Product();
-        $product->name = 'herbal shampoo';
-        $product->detail = 'for smooth and long hairs..';
-        $product->cat = 'cat 3';
-        $category->product()->save($product);
-    }
 
     public function index(Request $request)
 
     {
+
 
         if ($request->ajax()) {
             $data = Product::latest()->get();
@@ -47,13 +38,32 @@ class ProductController extends Controller
                 ->rawColumns(['action'])->make(true);
         }
 
+        $categories = Category::all();
         $products = Product::latest()->get();
-        return view('products.index', compact('products'))
+        return view('products.index', compact('categories', 'products'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
+    public function add(Request $request)
+    {
+        $data = $request->validate([
+            'name' => ['string', 'required'],
+            'detail' => ['text', 'required'],
+            'cat_id' => ['required', 'numeric'],
 
+        ]);
+        $category = Category::findOrFail($data['cat_id']);
+        $product = new Product();
+        $product->name = $data['name'];
+        $product->detail = $data['detail'];
+        $product->cat_id = $data['cat_id'];
 
+        $category->products()->save($product);
+        session()->flash("status", "success");
+        session()->flash("title", "Success!");
+        session()->flash('message', "The product was created successfully!");
+        return redirect()->route('products');
+    }
     // $products = Product::latest()->paginate(5);
     // return view('products.index', compact('products'))
     //     ->with('i', (request()->input('page', 1) - 1) * 5);
@@ -86,6 +96,8 @@ class ProductController extends Controller
 
             $product->detail = $request->detail;
 
+            $product->cat_id = $request->cat_id;
+
             $product->save();
 
             return redirect()->route('products.index')
@@ -95,6 +107,7 @@ class ProductController extends Controller
             $request->validate([
                 'name' => 'required',
                 'detail' => 'required',
+
             ]);
             Product::create($request->all());
         }
@@ -144,6 +157,7 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required',
             'detail' => 'required',
+            'cat_id' => 'required',
         ]);
 
         $product->update($request->all());

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
@@ -13,8 +13,9 @@ use Yajra\DataTables\Facades\DataTables;
 
 class CategoryController extends Controller
 {
-    public function add_category()
+    public function add_category($id)
     {
+        $category = Category::find($id);
         $category = new Category();
         $category->name = 'asima';
         $category->detail = 'abcdefgh';

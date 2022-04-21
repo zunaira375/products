@@ -61,9 +61,23 @@
                 <strong>Name:</strong>
                 <input type="text" name="name" value="{{$product->name ?? ''}}" class="form-control" placeholder="Name">
             </div>
-        </div>
+        </div><br>
+
+        <div class="row">
+
+                <label for="category" > Choose Category: </label>
+
+                <select name="category" id="cat_id">
+                <option value="{{$category->name ??''}}">Clothes</option>
+                 <option value="{{$category->name ?? ''}}">Shows</option>
+                 <option value="{{$category->name ?? ''}}">Cosmatics</option>
+                  <option value="{{$category->name ?? ''}}">Hair</option>
+                    </select>
+
+        </div> <br>
+        <br>
         <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="form-group">
+            <div class="form-group"><br>
                 <strong>Detail:</strong>
             </div>
             </div>
@@ -90,6 +104,7 @@
         <tr>
             <td>{{ ++$i }}</td>
             <td>{{ $product->name }}</td>
+            <td>{{ $category->name }}</td>
             <td>{{ $product->detail }}</td>
             <td>
 
