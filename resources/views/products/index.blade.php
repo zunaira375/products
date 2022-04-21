@@ -104,7 +104,7 @@
         <tr>
             <td>{{ ++$i }}</td>
             <td>{{ $product->name }}</td>
-            <td>{{ $category->name }}</td>
+            <td>{{ $product->name }}</td>
             <td>{{ $product->detail }}</td>
             <td>
 
