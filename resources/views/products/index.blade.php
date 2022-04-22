@@ -65,14 +65,14 @@
 
         <div class="row">
 
-                <label for="category" > Choose Category: </label>
 
-                <select name="category" id="cat_id">
-                <option value="{{$category->name ??''}}">Clothes</option>
-                 <option value="{{$category->name ?? ''}}">Shows</option>
-                 <option value="{{$category->name ?? ''}}">Cosmatics</option>
-                  <option value="{{$category->name ?? ''}}">Hair</option>
-                    </select>
+            <select class="form-control" id="cat_id" name="cat_id" data-live-search="true">
+                <option value="">Select Category</option>
+                @foreach($categories as $category)
+                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                @endforeach
+            </select>
+
 
         </div> <br>
         <br>
@@ -96,16 +96,23 @@
         <tr>
             <th>No</th>
             <th>Name</th>
+            <th>Category</th>
             <th>Details</th>
+
             <th width="280px">Action</th>
         </tr>
     </thead>
         @foreach ($products as $product)
+
         <tr>
             <td>{{ ++$i }}</td>
             <td>{{ $product->name }}</td>
-            <td>{{ $product->name }}</td>
+
+            <td>{{ $category->name }}</td>
+
             <td>{{ $product->detail }}</td>
+
+
             <td>
 
                 <form id="productForm" action="{{ route('products.destroy',$product->id) }}" method="POST" name="form">
@@ -140,6 +147,7 @@
             columns : [
                 {data:'id',name:'id'},
                 {data:'name',name:'name'},
+                {data:'cat_id',name:'cat_id'},
                 {data:'detail',name:'detail'},
                 {data: 'action', name: 'action', orderable: false, searchable: false},
             ]

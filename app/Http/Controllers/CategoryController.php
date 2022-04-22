@@ -43,7 +43,12 @@ class CategoryController extends Controller
                 ->rawColumns(['action'])->make(true);
         }
 
-        $categories = Category::latest()->get();
+        // $categories = Category::with('products')->get();
+        // return view('products.index', compact('categories', 'products'))
+        //     ->with('i', (request()->input('page', 1) - 1) * 5);
+
+        // $categories = Category::latest()->get();
+        $categories = Category::with('products')->get();
         return view('categories.index', compact('categories'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
@@ -112,7 +117,8 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        //
+        // return view('products.index', compact('product'));
+
         $category = Category::find($id);
         $categories = Category::latest()->paginate(5);
 

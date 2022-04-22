@@ -9,14 +9,15 @@ class CreateCategoriesTable extends Migration
     /**
      * Run the migrations.
      *
-     * @return void
+     * @return voidpublic function up()
+
      */
     public function up()
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->name();
-            $table->description();
+            $table->string('name');
+            $table->string('detail');
             $table->timestamps();
         });
     }

@@ -87,6 +87,7 @@
         </tr>
     </thead>
         @foreach ($categories as $category)
+
         <tr>
             <td>{{ ++$i }}</td>
             <td>{{ $category->name }}</td>

@@ -15,13 +15,17 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string("name")->default('');
-            $table->text("detail")->nullable();
-            $table->integer("cat_id")->unsigned();
+            $table->unsignedBigInteger('cat_id')->nullable();
+            $table->string('name');
+            $table->text('detail');
             $table->timestamps();
-            $table->foreign("cat_id")->references("id")->on("categories")->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreign('cat_id')->on('categories')->references('id')
+                ->onDelete('CASCADE')
+                ->onUpdate('CASCADE');
         });
     }
+
+
 
     /**
      * Reverse the migrations.

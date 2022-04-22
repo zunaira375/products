@@ -40,7 +40,7 @@ class ProductController extends Controller
 
         $categories = Category::all();
         $products = Product::latest()->get();
-        return view('products.index', compact('categories', 'products'))
+        return view('products.index', compact('products', 'categories'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -48,15 +48,16 @@ class ProductController extends Controller
     {
         $data = $request->validate([
             'name' => ['string', 'required'],
-            'detail' => ['text', 'required'],
             'cat_id' => ['required', 'numeric'],
+            'detail' => ['text', 'required'],
 
         ]);
-        $category = Category::findOrFail($data['cat_id']);
+        $category = Category::findOrFail($data['id']);
         $product = new Product();
         $product->name = $data['name'];
-        $product->detail = $data['detail'];
         $product->cat_id = $data['cat_id'];
+        $product->detail = $data['detail'];
+
 
         $category->products()->save($product);
         session()->flash("status", "success");
@@ -94,11 +95,15 @@ class ProductController extends Controller
 
             $product->name = $request->name;
 
-            $product->detail = $request->detail;
-
             $product->cat_id = $request->cat_id;
 
+            $product->detail = $request->detail;
+
+
+
             $product->save();
+
+            $product->categories()->attach($request->category);
 
             return redirect()->route('products.index')
                 ->with('success', 'Product updated successfully.');
@@ -107,6 +112,9 @@ class ProductController extends Controller
             $request->validate([
                 'name' => 'required',
                 'detail' => 'required',
+
+
+
 
             ]);
             Product::create($request->all());
@@ -157,7 +165,7 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required',
             'detail' => 'required',
-            'cat_id' => 'required',
+
         ]);
 
         $product->update($request->all());
