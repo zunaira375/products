@@ -38,7 +38,7 @@ class ProductController extends Controller
                 ->rawColumns(['action'])->make(true);
         }
 
-        $categories = Category::all();
+        $categories = Category::with('products')->get();
         $products = Product::latest()->get();
         return view('products.index', compact('products', 'categories'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
@@ -146,9 +146,10 @@ class ProductController extends Controller
         // return view('products.index', compact('product'));
 
         $product = Product::find($id);
-        $products = Product::latest()->paginate(5);
 
-        return view('products.index', compact('product', 'products'))->with('i', (request()->input('page', 1) - 1) * 5);
+        $categories = Category::latest()->paginate(5);
+
+        return view('products.index', compact('product', 'categories'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
     /**
@@ -165,6 +166,7 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required',
             'detail' => 'required',
+
 
         ]);
 
