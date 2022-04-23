@@ -55,7 +55,7 @@ class ProductController extends Controller
         $category = Category::findOrFail($data['id']);
         $product = new Product();
         $product->name = $data['name'];
-        $product->cat_id = $data['cat_id'];
+        $product->category = $data['category'];
         $product->detail = $data['detail'];
 
 
@@ -94,10 +94,10 @@ class ProductController extends Controller
             $product = Product::find($id);
 
             $product->name = $request->name;
-
-            $product->cat_id = $request->cat_id;
-
             $product->detail = $request->detail;
+            $product->category = $request->category;
+
+
 
 
 
@@ -166,6 +166,7 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required',
             'detail' => 'required',
+            'category' => 'category',
 
 
         ]);
