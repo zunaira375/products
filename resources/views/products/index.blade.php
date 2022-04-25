@@ -65,12 +65,14 @@
 
         <div class="row">
 
-               <select class="form-control" id="cat_id" name="category" data-live-search="true">
-                <option value="">Select Category</option>
-                @foreach($categories as $category)
-                    <option value="{{ $category->name ?? ''}}"></option>
-                @endforeach
-            </select>
+
+
+                <select class="form-control select2" name="cat_id" required>
+                   <option>Select Category</option>
+                   @foreach ($categories as $category)
+                   <option value="{{$category->id}}">{{$category->name}} </option>
+                   @endforeach
+                </select>
 
         </div> <br>
         <br>
@@ -107,7 +109,9 @@
             <td>{{ ++$i }}</td>
             <td>{{ $product->name }}</td>
 
-            <td>{{$product->category->name}}</td>
+            <td>{{ $product->category->name }}</td>
+
+            {{-- //<td>{{$product->category->name}}</td> --}}
 
             <td>{{ $product->detail }}</td>
 
@@ -146,7 +150,7 @@
             columns : [
                 {data:'id',name:'id'},
                 {data:'name',name:'name'},
-                {data:'category',name:'category'},
+                {data:'cat_id',name:'cat_id'},
                 {data:'detail',name:'detail'},
                 {data: 'action', name: 'action', orderable: false, searchable: false},
             ]

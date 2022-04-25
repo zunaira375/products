@@ -40,7 +40,7 @@ class ProductController extends Controller
 
         $categories = Category::with('products')->get();
         $products = Product::latest()->get();
-        return view('products.index', compact('products', 'categories'))
+        return view('products.index', compact('products', 'categories',))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -94,8 +94,10 @@ class ProductController extends Controller
             $product = Product::find($id);
 
             $product->name = $request->name;
+
+            $product->cat_id = $request->cat_id;
             $product->detail = $request->detail;
-            $product->category = $request->category;
+
 
 
 
@@ -108,6 +110,8 @@ class ProductController extends Controller
             return redirect()->route('products.index')
                 ->with('success', 'Product updated successfully.');
         } else {
+
+
             //Perform Create
             $request->validate([
                 'name' => 'required',
@@ -146,10 +150,11 @@ class ProductController extends Controller
         // return view('products.index', compact('product'));
 
         $product = Product::find($id);
+        $products = Product::latest()->paginate(5);
 
-        $categories = Category::latest()->paginate(5);
+        // $categories = Category::latest()->paginate(5);
 
-        return view('products.index', compact('product', 'categories'))->with('i', (request()->input('page', 1) - 1) * 5);
+        return view('products.index', compact('product', 'products'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
     /**
@@ -166,7 +171,7 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required',
             'detail' => 'required',
-            'category' => 'category',
+            'cat_id' => 'cat_id',
 
 
         ]);
