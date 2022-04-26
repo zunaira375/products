@@ -38,9 +38,11 @@ class ProductController extends Controller
                 ->rawColumns(['action'])->make(true);
         }
 
+
         $categories = Category::with('products')->get();
-        $products = Product::latest()->get();
-        return view('products.index', compact('products', 'categories',))
+        $products = Product::with('category')->get();
+
+        return view('products.index', ['categories' => $categories], ['products' => $products])
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -55,11 +57,17 @@ class ProductController extends Controller
         $category = Category::findOrFail($data['id']);
         $product = new Product();
         $product->name = $data['name'];
-        $product->category = $data['category'];
+        $product->name = $data['name'];
+        $product->cat_id = $data['cat_id'];
         $product->detail = $data['detail'];
 
 
-        $category->products()->save($product);
+        $category->products()->saveMany([
+            new Product(['product' => 'name']),
+            new Product(['category' => 'name']),
+            new Product(['product' => 'detail']),
+            new Product(['product' => 'cat_id']),
+        ]);
         session()->flash("status", "success");
         session()->flash("title", "Success!");
         session()->flash('message', "The product was created successfully!");
@@ -93,19 +101,17 @@ class ProductController extends Controller
             $id = $request->get('id');
             $product = Product::find($id);
 
+
             $product->name = $request->name;
 
             $product->cat_id = $request->cat_id;
+
             $product->detail = $request->detail;
-
-
-
-
-
 
             $product->save();
 
             $product->categories()->attach($request->category);
+
 
             return redirect()->route('products.index')
                 ->with('success', 'Product updated successfully.');
@@ -116,6 +122,7 @@ class ProductController extends Controller
             $request->validate([
                 'name' => 'required',
                 'detail' => 'required',
+                'cat_id' => 'required',
 
 
 
@@ -151,10 +158,11 @@ class ProductController extends Controller
 
         $product = Product::find($id);
         $products = Product::latest()->paginate(5);
+        $categories = Category::with('products')->get();
 
         // $categories = Category::latest()->paginate(5);
 
-        return view('products.index', compact('product', 'products'))->with('i', (request()->input('page', 1) - 1) * 5);
+        return view('products.index', compact('product', 'products', 'categories'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
     /**
@@ -169,9 +177,10 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $request->validate([
+            'cname' => 'required',
             'name' => 'required',
             'detail' => 'required',
-            'cat_id' => 'cat_id',
+
 
 
         ]);

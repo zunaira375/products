@@ -68,7 +68,7 @@
 
 
                 <select class="form-control select2" name="cat_id" required>
-                   <option>Select Category</option>
+                   <label>Select Category</label>
                    @foreach ($categories as $category)
                    <option value="{{$category->id}}">{{$category->name}} </option>
                    @endforeach
@@ -102,16 +102,20 @@
             <th width="280px">Action</th>
         </tr>
     </thead>
+
         @foreach ($products as $product)
 
 
         <tr>
             <td>{{ ++$i }}</td>
+
             <td>{{ $product->name }}</td>
 
-            <td>{{ $product->category->name }}</td>
 
-            {{-- //<td>{{$product->category->name}}</td> --}}
+            <td>{{ $product->category->name}}</td>
+
+            {{-- <td>{{$product->category->name}}</td> --}}
+
 
             <td>{{ $product->detail }}</td>
 
