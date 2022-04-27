@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>products</title>
+    <title>items</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
@@ -38,7 +38,7 @@
 <!--end of header-->
 
 <div  style="padding-left:2px;padding-top:20px" >
-<h2>Add New Product</h2>
+<h2>Add New Item</h2>
 </div>
 @if ($errors->any())
     <div class="alert alert-danger">
@@ -52,14 +52,14 @@
 @endif
 
 
-<form action="{{ route('products.store') }}" method="POST">
+<form action="{{ route('items.store') }}" method="POST">
     @csrf
-    <input type="hidden" name="id" value="{{$product->id ?? ''}}" />
+    <input type="hidden" name="id" value="{{$item->id ?? ''}}" />
      <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="form-group">
                 <strong>Name:</strong>
-                <input type="text" name="name" value="{{$product->name ?? ''}}" class="form-control" placeholder="Name">
+                <input type="text" name="name" value="{{$item->name ?? ''}}" class="form-control" placeholder="Name">
             </div>
         </div><br>
 
@@ -68,10 +68,10 @@
 
 
 
-                    <select class="form-control select2" name="cat_id" required>
-                     <option>Select Category</option>
-                       @foreach ($categories as $category)
-                            <option value="{{$category->id}}" @if(isset($product) && $product->cat_id==$category->id) selected="selected" @endif>{{$category->name}} </option>
+                    <select class="form-control select2" name="product_id" required>
+                     <option>Select Product</option>
+                       @foreach ($items as $item)
+                            <option value="{{$item->id}}" @if(isset($item) && $item->product_id==$product->id) selected="selected" @endif>{{$product->name}} </option>
                        @endforeach
                     </select>
 
@@ -79,10 +79,10 @@
         <br>
         <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="form-group"><br>
-                <strong>Detail:</strong>
+                <strong>Size:</strong>
             </div>
             </div>
-            <input type="text" name="detail" value="{{$product->detail ?? ''}}" class="form-control"  style="height:150px" placeholder="Detail">
+            <input type="text" name="size" value="{{$item->size ?? ''}}" class="form-control"  style="height:150px" placeholder="size">
             {{-- <textarea class="form-control" style="height:150px" name="detail"  value="{{$product->detail ?? ''}}" class="form-control" placeholder="Detail"></textarea> --}}
             </div>
         </div>
@@ -97,8 +97,8 @@
         <tr>
             <th>No</th>
             <th>Name</th>
-            <th>Category</th>
-            <th>Details</th>
+            <th>Product</th>
+            <th>Size</th>
 
             <th width="280px">Action</th>
         </tr>
@@ -121,24 +121,24 @@
         var table = $('table').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('products.index') }}",
+            ajax: "{{ route('items.index') }}",
             columns : [
                 {data:'id',name:'id'},
                 {data:'name',name:'name'},
-                {data:'cat_id',name:'cat_id'},
-                {data:'detail',name:'detail'},
+                {data:'product_id',name:'product_id'},
+                {data:'size',name:'size'},
                 {data: 'action', name: 'action', orderable: false, searchable: false},
             ]
         });
 
 
-        $('body').on('click', '.deleteProduct', function (){
-            var product_id = $(this).data("id");
+        $('body').on('click', '.deleteItem', function (){
+            var item_id = $(this).data("id");
             var result = confirm("Are You sure want to delete !");
             if(result){
                 $.ajax({
                     type: "DELETE",
-                    url: "{{ route('products.store') }}"+'/'+product_id,
+                    url: "{{ route('items.store') }}"+'/'+item_id,
                     success: function (data) {
                         table.draw();
                     },

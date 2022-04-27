@@ -4,6 +4,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ItemController;
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\FrontController;
@@ -32,6 +33,7 @@ Auth::routes();
 
 Route::resource('products', ProductController::class)->middleware('CustomAuth');
 Route::resource('categories', CategoryController::class)->middleware('CustomAuth');
+Route::resource('items', ItemController::class)->middleware('CustomAuth');
 
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->middleware('CustomAuth')->name('home');
