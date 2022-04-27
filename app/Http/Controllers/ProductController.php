@@ -35,14 +35,16 @@ class ProductController extends Controller
 
                     return $btn;
                 })
+                ->editColumn('cat_id', function ($row) {
+                    return $row->category()->first()->name;
+                })
                 ->rawColumns(['action'])->make(true);
         }
 
 
         $categories = Category::with('products')->get();
-        $products = Product::with('category')->get();
 
-        return view('products.index', ['categories' => $categories], ['products' => $products])
+        return view('products.index', compact('categories'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -110,7 +112,7 @@ class ProductController extends Controller
 
             $product->save();
 
-            $product->categories()->attach($request->category);
+            // $product->categories()->attach($request->category);
 
 
             return redirect()->route('products.index')

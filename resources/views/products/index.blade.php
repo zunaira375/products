@@ -63,18 +63,19 @@
             </div>
         </div><br>
 
-        <div class="row">
+
+ <div class="row">
 
 
 
-                <select class="form-control select2" name="cat_id" required>
-                   <label>Select Category</label>
-                   @foreach ($categories as $category)
-                   <option value="{{$category->id}}">{{$category->name}} </option>
-                   @endforeach
-                </select>
+                    <select class="form-control select2" name="cat_id" required>
+                     <option>Select Category</option>
+                       @foreach ($categories as $category)
+                            <option value="{{$category->id}}" @if(isset($product) && $product->cat_id==$category->id) selected="selected" @endif>{{$category->name}} </option>
+                       @endforeach
+                    </select>
 
-        </div> <br>
+            </div> <br>
         <br>
         <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="form-group"><br>
@@ -103,39 +104,9 @@
         </tr>
     </thead>
 
-        @foreach ($products as $product)
+     <tbody>
 
-
-        <tr>
-            <td>{{ ++$i }}</td>
-
-            <td>{{ $product->name }}</td>
-
-
-            <td>{{ $product->category->name}}</td>
-
-            {{-- <td>{{$product->category->name}}</td> --}}
-
-
-            <td>{{ $product->detail }}</td>
-
-
-            <td>
-
-                <form id="productForm" action="{{ route('products.destroy',$product->id) }}" method="POST" name="form">
-
-                    <a class="btn btn-info" href="{{ route('products.show',$product->id) }}">Show</a>
-
-                    {{-- <a class="btn btn-primary" href="{{ route('products.edit',$product->id) }}">Edit</a> --}}
-
-                    @csrf
-                    @method('DELETE')
-
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                </form>
-            </td>
-        </tr>
-        @endforeach
+     </tbody>
     </table>
 
 </body>
