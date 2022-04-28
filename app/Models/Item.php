@@ -10,7 +10,7 @@ class Item extends Model
     use HasFactory;
     protected $guarded = [];
     // protected $fillable = [
-    //     'name', 'size'
+    //     'id', 'name', 'size', 'product_id'
     // ];
     public function product()
     {

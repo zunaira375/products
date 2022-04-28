@@ -29,7 +29,7 @@ class ItemController extends Controller
 
                     //   $btn =  '<a href="/products/' . $data->id . '/edit" class="btn btn-primary"><i class="bi bi-pencil"></i></a>';
                     $btn = ' <a href="/items/' . $data->id . '/edit"  class="btn btn-primary btn-md "><i class="fas fa-pen text-white"></i></a>';
-                    $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip" data-id="' . $data->id . '" data-original-title="Delete" class="btn btn-danger btn-md deleteProduct"><i class="far fa-trash-alt text-white" data-feather="delete"></i></a>';
+                    $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip" data-id="' . $data->id . '" data-original-title="Delete" class="btn btn-danger btn-md deleteItem"><i class="far fa-trash-alt text-white" data-feather="delete"></i></a>';
 
                     return $btn;
                 })
@@ -40,9 +40,10 @@ class ItemController extends Controller
         }
 
 
-        $items = Item::with('product')->get();
+        $products = Product::with('items')->get();
 
-        return view('items.index', compact('items'))
+
+        return view('items.index', compact('products'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -114,7 +115,7 @@ class ItemController extends Controller
             $request->validate([
                 'name' => 'required',
                 'size' => 'required',
-                'product_id' => 'required',
+                // 'product_id' => 'required',
 
 
 

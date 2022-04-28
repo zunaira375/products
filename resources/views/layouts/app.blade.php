@@ -48,16 +48,23 @@
                         </li>
 
                         <li class="nav-item">
+                            <a class="nav-link" href="/items">Items</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/customers">Customers</a>
+                        </li>
+
+                        <li class="nav-item">
                             <a class="nav-link" href="/about-us">aboutUs</a>
                         </li>
+
 
                         <li class="nav-item">
                             <a class="nav-link" href="/home">Home</a>
                         </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="/items">Items</a>
-                        </li>
+
 
                     </ul>
 
