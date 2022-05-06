@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\VendorController;
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\FrontController;
@@ -36,6 +37,7 @@ Route::resource('products', ProductController::class)->middleware('CustomAuth');
 Route::resource('categories', CategoryController::class)->middleware('CustomAuth');
 Route::resource('items', ItemController::class)->middleware('CustomAuth');
 Route::resource('customers', CustomerController::class)->middleware('CustomAuth');
+Route::resource('vendors', VendorController::class)->middleware('CustomAuth');
 
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->middleware('CustomAuth')->name('home');
