@@ -28,8 +28,8 @@ class RoleController extends Controller
     public function addUser()
     {
         $user = new User();
-        $user->name = "zonny";
-        $user->email = "zonny@gmail.com";
+        $user->name = "jonn";
+        $user->email = "jonny@gmail.com";
         $user->save();
 
         $roleids = [2, 3, 4];
