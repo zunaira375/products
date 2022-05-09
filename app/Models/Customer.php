@@ -11,4 +11,9 @@ class Customer extends Model
     protected $fillable = [
         'name', 'phone_number', 'address'
     ];
+
+    public function mobile()
+    {
+        return $this->hasOne(Mobile::class);
+    }
 }

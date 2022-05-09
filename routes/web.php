@@ -6,6 +6,10 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\MobileController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\VendorController;
 
 use App\Http\Controllers\HomeController;
@@ -28,8 +32,22 @@ use Illuminate\Support\Facades\Auth;
 Route::get('/', function () {
     return view('welcome');
 });
-// Route::get('add-category', [CategoryController::class, 'add_category'])->name('add_category');
-// Route::get('add-product/{id}', [ProductController::class, 'add_product'])->name('add_product');
+//one-to-one relationship
+Route::get('add-customer', [CustomerController::class, 'add_customer']);
+Route::get('show-mobile/{id}', [CustomerController::class, 'show_mobile']);
+Route::get('show-customer/{id}', [MobileController::class, 'show_customer']);
+
+//one-to-many relationship
+Route::get('add-post', [PostController::class, 'addPost']);
+Route::get('add-comment/{id}', [PostController::class, 'addComment']);
+Route::get('get-comments/{id}', [PostController::class, 'getCommentsByPost']);
+
+//Many-to-many relationship
+Route::get('add-roles', [RoleController::class, 'addRole']);
+Route::get('add-users', [RoleController::class, 'addUser']);
+Route::get('usersByRole/{id}', [RoleController::class, 'getAllUsersByRole']);
+Route::get('rolesByUser/{id}', [RoleController::class, 'getAllRolesByUser']);
+
 
 Auth::routes();
 
@@ -43,5 +61,4 @@ Route::resource('vendors', VendorController::class)->middleware('CustomAuth');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->middleware('CustomAuth')->name('home');
 Route::get('admin/home', [HomeController::class, 'adminHome'])->name('admin.home')->middleware('is_admin');
 Route::get('home', [FrontController::class, 'home'])->name('home');
-// Route::get('products', [FrontController::class, 'products'])->name('products.index');
 Route::get('about-us', [FrontController::class, 'aboutUs'])->name('about.us');

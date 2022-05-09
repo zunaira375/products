@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\mobile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
@@ -44,6 +45,26 @@ class CustomerController extends Controller
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
+    // Add_Customer
+    public function add_customer()
+    {
+        $mobile = new mobile();
+        $mobile->model = 'Lg100';
+
+        $customer = new Customer();
+        $customer->name = 'shazma';
+        $customer->phone_number = '03345677474';
+        $customer->address = 'multan';
+        $customer->save();
+        $customer->mobile()->Save($mobile);
+    }
+    // Show_Mobile
+    public function show_mobile($id)
+    {
+        $mobile = Customer::find($id)->mobile;
+        // return $mobile;
+        return view('customers.customerMobile', ['mobile' => $mobile]);
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -54,6 +75,8 @@ class CustomerController extends Controller
         //
         return view('customers.index');
     }
+
+
 
     /**
      * Store a newly created resource in storage.
@@ -72,6 +95,7 @@ class CustomerController extends Controller
             $customer->name = $request->name;
 
             $customer->phone_number = $request->phone_number;
+
 
             $customer->address = $request->address;
 

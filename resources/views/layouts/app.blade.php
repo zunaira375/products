@@ -40,6 +40,14 @@
 
                         @endforeach
                         <li class="nav-item">
+                            <a class="nav-link" href="/home">Home</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/about-us">aboutUs</a>
+                        </li>
+
+                        <li class="nav-item">
                             <a class="nav-link" href="/categories">categories</a>
                         </li>
 
@@ -58,17 +66,6 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/vendors">Vendors</a>
                         </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="/about-us">aboutUs</a>
-                        </li>
-
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="/home">Home</a>
-                        </li>
-
-
 
                     </ul>
 

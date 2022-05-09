@@ -51,10 +51,10 @@
     </div>
 @endif
 
-
 <form action="{{ route('customers.store') }}" method="POST">
     @csrf
     <input type="hidden" name="id" value="{{$customer->id ?? ''}}" />
+
      <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="form-group">
@@ -73,7 +73,7 @@
             {{-- <textarea class="form-control" style="height:150px" name="detail"  value="{{$product->detail ?? ''}}" class="form-control" placeholder="Detail"></textarea> --}}
             </div>
         </div>
-   
+
         <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="form-group"><br>
                 <strong>Address:</strong>
@@ -96,6 +96,7 @@
             <th>Name</th>
             <th>Phone No.</th>
             <th>Address</th>
+
 
             <th width="280px">Action</th>
         </tr>
