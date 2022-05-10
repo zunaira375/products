@@ -11,6 +11,8 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VendorController;
+use App\Http\Controllers\SaleMasterController;
+use App\Http\Controllers\SaleDetailController;
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\FrontController;
@@ -56,6 +58,8 @@ Route::resource('categories', CategoryController::class)->middleware('CustomAuth
 Route::resource('items', ItemController::class)->middleware('CustomAuth');
 Route::resource('customers', CustomerController::class)->middleware('CustomAuth');
 Route::resource('vendors', VendorController::class)->middleware('CustomAuth');
+Route::resource('salemasters', SaleMasterController::class)->middleware('CustomAuth');
+Route::resource('saledetails', SaleDetailController::class)->middleware('CustomAuth');
 
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->middleware('CustomAuth')->name('home');

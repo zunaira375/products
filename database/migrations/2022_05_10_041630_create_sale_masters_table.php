@@ -15,10 +15,10 @@ class CreateSaleMastersTable extends Migration
     {
         Schema::create('sale_masters', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('customer_id')->unsigned();
             $table->date('date');
+            $table->bigInteger('customer_id')->unsigned();
             $table->timestamps();
-            $table->foreign('customer_id')->references('id')->on('sale_masters')->onDelete('cascade');
+            $table->foreign('customer_id')->references('id')->on('customer')->onDelete('cascade');
         });
     }
 
@@ -29,6 +29,6 @@ class CreateSaleMastersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sale__masters');
+        Schema::dropIfExists('sale_masters');
     }
 }

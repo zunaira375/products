@@ -14,10 +14,10 @@ class CreateSaleDetailsTable extends Migration
     public function up()
     {
         Schema::create('sale_details', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->bigInteger('sale_master_id')->unsigned();
+            $table->id();
             $table->integer('quantity');
             $table->integer('price');
+            $table->bigInteger('sale_master_id')->unsigned();
             $table->timestamps();
             $table->foreign('sale_master_id')->references('id')->on('sale_masters')->onDelete('cascade');
         });

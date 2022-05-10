@@ -67,6 +67,14 @@
                             <a class="nav-link" href="/vendors">Vendors</a>
                         </li>
 
+                        <li class="nav-item">
+                            <a class="nav-link" href="/salemasters">SaleMasters</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/saledetails">SaleDetails</a>
+                        </li>
+
                     </ul>
 
                     <!-- Right Side Of Navbar -->
