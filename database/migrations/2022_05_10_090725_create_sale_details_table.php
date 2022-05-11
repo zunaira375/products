@@ -15,11 +15,13 @@ class CreateSaleDetailsTable extends Migration
     {
         Schema::create('sale_details', function (Blueprint $table) {
             $table->id();
+            $table->date('date');
             $table->integer('quantity');
             $table->integer('price');
             $table->bigInteger('sale_master_id')->unsigned();
             $table->timestamps();
-            $table->foreign('sale_master_id')->references('id')->on('sale_masters')->onDelete('cascade');
+            $table->foreign('sale_master_id')->references('id')->on('sale_masters')
+                ->onDelete('CASCADE');
         });
     }
 

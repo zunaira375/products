@@ -30,11 +30,11 @@ class SaleDetailController extends Controller
 
                     //   $btn =  '<a href="/products/' . $data->id . '/edit" class="btn btn-primary"><i class="bi bi-pencil"></i></a>';
                     $btn = ' <a href="/saledetails/' . $data->id . '/edit"  class="btn btn-primary btn-md "><i class="fas fa-pen text-white"></i></a>';
-                    $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip" data-id="' . $data->id . '" data-original-title="Delete" class="btn btn-danger btn-md deleteDetail"><i class="far fa-trash-alt text-white" data-feather="delete"></i></a>';
+                    $btn = $btn . ' <a href="/saledetails/" data-toggle="tooltip" data-id="' . $data->id . '" data-original-title="Delete" class="btn btn-danger btn-md deleteDetails"><i class="far fa-trash-alt text-white" data-feather="delete"></i></a>';
 
                     return $btn;
                 })
-                // ->editColumn('customer_id', function ($row) {
+                // ->editColumn('sale_master_id', function ($row) {
                 //     return $row->customer()->first()->name;
                 // })
                 ->rawColumns(['action'])->make(true);
@@ -43,7 +43,7 @@ class SaleDetailController extends Controller
 
         $salemasters = SaleMaster::with('sale_details')->get();
 
-        return view('saleDetails.index', compact('salemasters'))
+        return view('saledetails.index', compact('salemasters'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -55,7 +55,7 @@ class SaleDetailController extends Controller
     public function create()
     {
         //
-        return view('saleDetails.index');
+        return view('saledetails.index');
     }
 
     /**
@@ -71,6 +71,7 @@ class SaleDetailController extends Controller
             $id = $request->get('id');
             $saleDetail = SaleDetail::find($id);
 
+            $saleDetail->date = $request->date;
 
             $saleDetail->quantity = $request->quantity;
 
@@ -90,6 +91,7 @@ class SaleDetailController extends Controller
 
             //Perform Create
             $request->validate([
+                'date' => 'required',
                 'quantity' => 'required',
                 'price' => 'required',
                 'sale_master_id' => 'required',
@@ -134,7 +136,7 @@ class SaleDetailController extends Controller
 
         // $categories = Category::latest()->paginate(5);
 
-        return view('saleDetails.index', compact('saleDetail', 'saleDetails', 'salemasters'))->with('i', (request()->input('page', 1) - 1) * 5);
+        return view('saledetails.index', compact('saleDetail', 'saleDetails', 'salemasters'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
     /**
      * Update the specified resource in storage.
@@ -146,6 +148,7 @@ class SaleDetailController extends Controller
     public function update(Request $request, SaleDetail $saleDetail)
     {
         $request->validate([
+            'date' => 'required',
             'quantity' => 'required',
             'price' => 'required',
             'sale_master_id' => 'required',
@@ -164,11 +167,11 @@ class SaleDetailController extends Controller
      * @param  \App\Models\SaleMaster  $saleMaster
      * @return \Illuminate\Http\Response
      */
-    public function destroy(SaleDetail $SaleDetail)
+    public function destroy(SaleDetail $saleDetail)
     {
-        $SaleDetail->delete();
+        $saleDetail->delete();
 
         return redirect()->route('saledetails.index')
-            ->with('success', 'sale details deleted successfully');
+            ->with('success', 'sale Details deleted successfully');
     }
 }

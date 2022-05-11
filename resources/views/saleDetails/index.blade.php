@@ -56,6 +56,15 @@
     @csrf
     <input type="hidden" name="id" value="{{$saleDetail->id ?? ''}}" />
      <div class="row">
+
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="form-group">
+                <strong>Date:</strong>
+                <input type="date" name="date" value="{{$saleDetail->date ?? ''}}" class="form-control" placeholder="Date">
+            </div>
+        </div><br>
+
+
         <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="form-group">
                 <strong>Quantity:</strong>
@@ -76,7 +85,7 @@
 
 
                     <select class="form-control select2" name="sale_master_id" required>
-                     <option>Select salemaster</option>
+                     <option>Select customer</option>
                        @foreach ($salemasters as $salesMaster)
                             <option value="{{$salesMaster->id}}" @if(isset($saleDetail) && $saleDetail->sale_master_id==$salesMaster->id) selected="selected" @endif>{{$salesMaster->id}} </option>
                        @endforeach
@@ -84,6 +93,7 @@
 
             </div> <br>
         <br>
+
 
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 text-left">
@@ -96,9 +106,10 @@
     <thead class="bg-secondary text-white">
         <tr>
             <th>No</th>
+            <th>Date</th>
             <th>Price</th>
             <th>Quantity</th>
-            <th>Sale_master_id</th>
+            <th>Customer</th>
 
 
             <th width="280px">Action</th>
@@ -125,6 +136,7 @@
             ajax: "{{ route('saledetails.index') }}",
             columns : [
                 {data:'id',name:'id'},
+                {data:'date',name:'date'},
                 {data:'price',name:'price'},
                 {data:'quantity',name:'quantity'},
                 {data:'sale_master_id',name:'sale_master_id'},
@@ -133,7 +145,7 @@
         });
 
 
-        $('body').on('click', '.deleteDetail', function (){
+        $('body').on('click', '.deleteDetails', function (){
             var details_id = $(this).data("id");
             var result = confirm("Are You sure want to delete !");
             if(result){

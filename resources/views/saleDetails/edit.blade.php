@@ -26,6 +26,15 @@
         @method('PUT')
 
          <div class="row">
+
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="form-group">
+                    <strong>Date:</strong>
+                    <input type="date" name="date" value="{{ $saleDetail->date}}" class="form-control" placeholder="date">
+                </div>
+            </div>
+
+
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
                     <strong>Quantity:</strong>

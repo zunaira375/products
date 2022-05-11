@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSaleMastersTable extends Migration
+class SaleMasters extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreateSaleMastersTable extends Migration
      */
     public function up()
     {
+        //
         Schema::create('sale_masters', function (Blueprint $table) {
             $table->id();
             $table->date('date');
             $table->bigInteger('customer_id')->unsigned();
             $table->timestamps();
-            $table->foreign('customer_id')->references('id')->on('customer')->onDelete('cascade');
+            $table->foreign('customer_id')->references('id')->on('customer');
         });
     }
 
@@ -29,6 +30,7 @@ class CreateSaleMastersTable extends Migration
      */
     public function down()
     {
+        //
         Schema::dropIfExists('sale_masters');
     }
 }
