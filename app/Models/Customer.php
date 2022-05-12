@@ -17,7 +17,7 @@ class Customer extends Model
         return $this->hasOne(Mobile::class);
     }
 
-    public function sale_masters()
+    public function sale_details()
     {
 
         return $this->hasMany(SaleMaster::class, 'customer_id');

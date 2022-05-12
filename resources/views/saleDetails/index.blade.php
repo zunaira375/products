@@ -39,7 +39,7 @@
 
 <div  style="padding-left:2px;padding-top:20px" >
 <h2>Add New SalesDetails</h2>
-</div>
+</div><br>
 @if ($errors->any())
     <div class="alert alert-danger">
         <strong>Whoops!</strong> There were some problems with your input.<br><br>
@@ -55,63 +55,51 @@
 <form action="{{ route('saledetails.store') }}" method="POST">
     @csrf
     <input type="hidden" name="id" value="{{$saleDetail->id ?? ''}}" />
-     <div class="row">
 
-        <div class="col-xs-12 col-sm-12 col-md-12">
+    <div class="form-row">
+    <div class="form-group col-md-2">
             <div class="form-group">
-                <strong>Date:</strong>
-                <input type="date" name="date" value="{{$saleDetail->date ?? ''}}" class="form-control" placeholder="Date">
+                <strong>Select Date:</strong>
+                <input type="date" name="date" value="{{$saleDetail->date ?? ''}}" class="form-control" id="date" placeholder="Date">
             </div>
-        </div><br>
+  </div>
 
 
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="form-group">
-                <strong>Quantity:</strong>
-                <input type="integer" name="quantity" value="{{$saleDetail->quantity ?? ''}}" class="form-control" placeholder="Qunatity">
-            </div>
-        </div><br>
+    <div class="form-group col-md-2" style="margin-left:50px">
+        <strong>Select Customer:</strong>
+        <select class="form-control " name="sale_master_id" required>
+        <option>Select Customer</option>
+        @foreach ($customers as $customer)
+           <option value="{{ $customer->id }}">{{ $customer->name }}</option>
+         @endforeach
+       </select><br>
+  </div>
 
-        <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="form-group">
-                    <strong>price:</strong>
-                    <input type="integer" name="price" value="{{$saleDetail->price ?? ''}}" class="form-control" placeholder="Price">
-                </div>
-            </div><br>
-
- <div class="row">
-
-
-
-                    <select class="form-control select2" name="sale_master_id" required>
-                     <option>Select customer</option>
-                       @foreach ($salemasters as $salesMaster)
-                            <option value="{{$salesMaster->id}}" @if(isset($saleDetail) && $saleDetail->sale_master_id==$salesMaster->id) selected="selected" @endif>{{$salesMaster->id}} </option>
-                       @endforeach
-                    </select>
-
-            </div> <br>
-        <br>
-
-
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12 text-left">
-                <button type="submit"   class="btn btn-primary"style="margin:35px" >Submit</button>
-        </div>
     </div>
+    <div class="form-row">
+        <div class="col-xs-12 col-sm-12 col-md-2">
 
-</form>
- <table id="table" class="table table-bordered">
-    <thead class="bg-secondary text-white">
+            <strong>Select Product:</strong>
+             <select class="form-control " name="product_id" required>
+             <option>Select Product</option>
+             @foreach ($products as $product)
+                <option value="{{ $product->id }}">{{ $product->name }}</option>
+              @endforeach
+            </select><br>
+</div>
+
+
+{{-- First Table --}}
+<div class="col-sm-12 col-sm-12 col-md-6" style="margin-left: 150px">
+
+   <table  id="myTable1" class="table table-bordered"  style="width:900px">
+
+    <thead class="bg-success text-white">
         <tr>
-            <th>No</th>
-            <th>Date</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Customer</th>
-
-
+            <th>Product</th>
+             <th>quantity</th>
+             <th>price</th>
+             <th>total</th>
             <th width="280px">Action</th>
         </tr>
     </thead>
@@ -121,8 +109,74 @@
      </tbody>
     </table>
 
+<br>
+</div>
+</div>
+
+<div class="form-row">
+    <div class="col-xs-12 col-sm-12 col-md-2">
+                <strong>Quantity:</strong>
+                <input type="integer" name="quantity" value="{{$saleDetail->quantity ?? ''}}" class="form-control" placeholder="Qunatity">
+
+                <strong>Price:</strong>
+                <input type="integer" name="price" value="{{$saleDetail->price?? ''}}" class="form-control" placeholder="Price">
+
+
+        <div class="col-lg-12 col-md-12 col-lg-12 text-center">
+                <button type="submit" id="add"  class="btn btn-success"  style="margin:20px;width:100px" >Add</button>
+        </div>
+
+            </div>
+
+
+            <div class="col-lg-12 col-md-12 col-lg-12 text-right">
+                <button type="submit"   class="btn btn-success"  style="margin:20px;width:100px" >Save</button>
+        </div>
+
+</form>
+
+
+{{-- //SeconD table --}}
+<table id="myTable2" class="table table-bordered" >
+    <thead class="bg-success text-white">
+        <tr>
+            <th>No.</th>
+            <th>Customer</th>
+             <th>Date</th>
+             <th>total amount</th>
+            <th width="280px">Action</th>
+        </tr>
+    </thead>
+
+     <tbody>
+
+     </tbody>
+    </table>
+
+    <script type="text/javascript">
+        $('#add').on('click', function() {
+        var id=$('#id').val();
+        var date=$('#date').val();
+        var sale_master_id=$('#sale_master_id').val();
+        var product_id=$('#product_id').val();
+        var quantity=$('#quantity').val();
+        var price=$('#price').val();
+        var count = $('#myTable1 tr').length;
+        if(id!="" && date !="" && sale_master_id!="" && product_id!="" && quantity!="" && price !=""){
+        $('#myTable1 tbody').append('<tr class="child"><td>'+count+'</td><td>'+id+'</td><td>'+date+'</td><td>'+sale_master_id+'</td><td>'+product_id+'</td><td>'+quantity+'</td><td>'+price+'</td><td><a href="javascript:void(0);" class="remCF1 btn btn-small btn-danger">Remove</a></td></tr>');
+        }
+        });
+        $(document).on('click','.remCF1',function(){
+        $(this).parent().parent().remove();
+        $('#myTable1 tbody tr').each(function(i){
+         $($(this).find('td')[0]).html(i+1);
+        });
+        });
+        </script>
 </body>
-<script>
+
+
+{{-- <script>
     $(function(){
         $.ajaxSetup({
             headers:{
@@ -130,16 +184,15 @@
             }
         });
 
-        var table = $('table').DataTable({
+        var table = $('table1').DataTable({
             processing: true,
             serverSide: true,
             ajax: "{{ route('saledetails.index') }}",
             columns : [
                 {data:'id',name:'id'},
-                {data:'date',name:'date'},
-                {data:'price',name:'price'},
+                {data:'product',name:'product'},
                 {data:'quantity',name:'quantity'},
-                {data:'sale_master_id',name:'sale_master_id'},
+                {data:'price',name:'price'},
                 {data: 'action', name: 'action', orderable: false, searchable: false},
             ]
         });
@@ -164,7 +217,9 @@
             }
         });
     });
-</script>
-
+</script> --}}
 </html>
 @endsection
+
+
+

@@ -10,11 +10,16 @@ class SaleDetail extends Model
     use HasFactory;
 
     protected $fillable = [
-        'date', 'quantity', 'price', 'sale_master_id'
+        'quantity', 'price', 'sale_master_id', 'product_id'
     ];
 
-    public function sale_master()
+    public function customer()
     {
         return $this->belongsTo(SaleMaster::class, 'sale_master_id', 'id');
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id', 'id');
     }
 }

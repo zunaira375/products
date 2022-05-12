@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Customer;
 use App\Models\SaleDetail;
+use App\Models\Product;
 use Yajra\DataTables\Facades\DataTables;
 use Validator;
 
@@ -22,28 +23,30 @@ class SaleDetailController extends Controller
     {
 
 
-        if ($request->ajax()) {
-            $data = SaleDetail::latest()->get();
-            return Datatables::of($data)
-                ->addIndexColumn()
-                ->addColumn('action', function ($data) {
+        // if ($request->ajax()) {
+        //     $data = SaleDetail::latest()->get();
+        //     return Datatables::of($data)
+        //         ->addIndexColumn()
+        //         ->addColumn('action', function ($data) {
 
-                    //   $btn =  '<a href="/products/' . $data->id . '/edit" class="btn btn-primary"><i class="bi bi-pencil"></i></a>';
-                    $btn = ' <a href="/saledetails/' . $data->id . '/edit"  class="btn btn-primary btn-md "><i class="fas fa-pen text-white"></i></a>';
-                    $btn = $btn . ' <a href="/saledetails/" data-toggle="tooltip" data-id="' . $data->id . '" data-original-title="Delete" class="btn btn-danger btn-md deleteDetails"><i class="far fa-trash-alt text-white" data-feather="delete"></i></a>';
+        //             //   $btn =  '<a href="/products/' . $data->id . '/edit" class="btn btn-primary"><i class="bi bi-pencil"></i></a>';
+        //             $btn = ' <a href="/saledetails/' . $data->id . '/edit"  class="btn btn-primary btn-md "><i class="fas fa-pen text-white"></i></a>';
+        //             $btn = $btn . ' <a href="/saledetails/" data-toggle="tooltip" data-id="' . $data->id . '" data-original-title="Delete" class="btn btn-danger btn-md deleteDetails"><i class="far fa-trash-alt text-white" data-feather="delete"></i></a>';
 
-                    return $btn;
-                })
-                // ->editColumn('sale_master_id', function ($row) {
-                //     return $row->customer()->first()->name;
-                // })
-                ->rawColumns(['action'])->make(true);
-        }
+        //             return $btn;
+        //         })
+        //         // ->editColumn('sale_master_id', function ($row) {
+        //         //     return $row->customer()->first()->name;
+        //         // })
+        //         ->rawColumns(['action'])->make(true);
+        // }
 
 
-        $salemasters = SaleMaster::with('sale_details')->get();
+        $customers = Customer::with('sale_details')->get();
 
-        return view('saledetails.index', compact('salemasters'))
+        $products = Product::with('sale_details')->get();
+
+        return view('saledetails.index', compact('customers', 'products'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -71,13 +74,15 @@ class SaleDetailController extends Controller
             $id = $request->get('id');
             $saleDetail = SaleDetail::find($id);
 
-            $saleDetail->date = $request->date;
+
 
             $saleDetail->quantity = $request->quantity;
 
             $saleDetail->price = $request->price;
 
             $saleDetail->sale_master_id = $request->sale_master_id;
+
+            $saleDetail->product_id = $request->product_id;
 
             $saleDetail->save();
 
@@ -91,10 +96,11 @@ class SaleDetailController extends Controller
 
             //Perform Create
             $request->validate([
-                'date' => 'required',
+
                 'quantity' => 'required',
                 'price' => 'required',
                 'sale_master_id' => 'required',
+                'product_id' => 'required',
                 // 'customer_id' => 'required',
 
 
@@ -105,7 +111,7 @@ class SaleDetailController extends Controller
         }
 
         return redirect()->route('saledetails.index')
-            ->with('success', 'saleDetail created successfully.');
+            ->with('success', 'Sale Details has been Added successfully.');
     }
 
     /**
@@ -152,6 +158,7 @@ class SaleDetailController extends Controller
             'quantity' => 'required',
             'price' => 'required',
             'sale_master_id' => 'required',
+            'product_id' => 'required',
 
         ]);
 
