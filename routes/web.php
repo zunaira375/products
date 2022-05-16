@@ -59,7 +59,8 @@ Route::resource('items', ItemController::class)->middleware('CustomAuth');
 Route::resource('customers', CustomerController::class)->middleware('CustomAuth');
 Route::resource('vendors', VendorController::class)->middleware('CustomAuth');
 Route::resource('salemasters', SaleMasterController::class)->middleware('CustomAuth');
-Route::resource('saledetails', SaleDetailController::class)->middleware('CustomAuth');
+Route::resource('saledetails', SaleDetailController::class);
+
 
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->middleware('CustomAuth')->name('home');

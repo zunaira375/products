@@ -23,8 +23,8 @@ class SaleDetails extends Migration
             $table->timestamps();
             $table->foreign('product_id')->references('id')->on('products')
                 ->onDelete('CASCADE');
-            $table->foreign('sale_master_id')->references('id')->on('sale_masters')
-                ->onDelete('CASCADE');
+            // $table->foreign('sale_master_id')->references('id')->on('sale_masters')
+            //     ->onDelete('CASCADE');
         });
     }
 
