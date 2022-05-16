@@ -37,7 +37,7 @@
         <!--end of header-->
 
         <div class="container" style="display:inline block;">
-            <form action="" target="frame" enctype="multipart/form-data" method="POST">
+            <form action="" id="editform" target="frame" enctype="multipart/form-data" method="POST">
                 @csrf
                 <input type="hidden" name="id" id="id" value="{{ $saleDetail->id ?? '' }}" />
 
@@ -151,12 +151,13 @@
             var total = quantity * price;
 
             if (product_id != "" && quantity != "" && price != "" && total != "") {
-                $('#tbl1 tbody').append('<tr class="child"><td>' + product_id +
+                $('#tbl1 tbody').append('<tr data-product_id= "'+product_id+'" data_quantity="'+quantity+'" data_price="'+price+'" class="child"><td>' + product_id +
                     '</td><td>' + quantity + '</td><td>' + price +
                     '</td><td>' + quantity * price +
-                    '</td><td><button  class="btn btn-primary btn-sm btnEdit">Edit</button>.<button class="btn btn-danger btn-sm btnDelete">Delete</button></td></tr>'
+                    '</td><td><a onClick="btnEdit(this)" class="btn btn-primary btn-sm btnEdit text-white">Edit</a>.<button class="btn btn-danger btn-sm btnDelete">Delete</button></td></tr>'
                 );
             }
+
         });
 
         //*
@@ -166,6 +167,44 @@
         });
 
 
+        $('#editform').on('click', '.btnEdit', function() {
+
+
+            var product = $(this).parents('tr').attr('data-product_id');
+            var quantity = $(this).parents('tr').attr('data_quantity');
+            var price = $(this).parents('tr').attr('data_price');
+
+
+            $(this).parents('tr').find('td:eq(0)').html("<input name='product_id' value='" + product + "'>");
+            $(this).parents('tr').find('td:eq(1)').html("<input name='quantity' value='" + quantity + "'>");
+            $(this).parents('tr').find('td:eq(2)').html("<input name='price' value='" + price + "'>");
+
+
+            $(this).parents('tr').find('td:eq(4)').prepend(
+                "<button type='button' class='btn btn-primary btn-sm btn_update mr-3'>Update</button>");
+            $(this).hide()
+        });
+
+        $('#editform').on('click', '.btn_update', function() {
+            var product = $(this).parents('tr').find("input[name='product_id']").val();
+            var quantity = $(this).parents('tr').find("input[name='quantity']").val();
+            var price = $(this).parents('tr').find("input[name='price']").val();
+
+
+            $(this).parents('tr').find('td:eq(0)').text(product);
+            $(this).parents('tr').find('td:eq(1)').text(quantity);
+            $(this).parents('tr').find('td:eq(2)').text(price);
+
+            $(this).parents('tr').attr('data-product_id', product);
+            $(this).parents('tr').attr('data_quantity', quantity);
+            $(this).parents('tr').attr('data_price', price);
+
+            $(this).parents('tr').find('.btnEdit').show();
+            $(this).parents('tr').find('.btn_update').remove();
+
+
+        })
+        F
     </script>
 
 
