@@ -66,6 +66,11 @@ class SaleDetailController extends Controller
             ->with('success', 'Sale Details has been added successfully!');
     }
 
+    // public function show(SaleDetail $saleDetail)
+    // {
+    //     return view('saledetails.index', compact('saleDetail'));
+    // }
+
     /**
      * Remove the specified resource from storage.
      *

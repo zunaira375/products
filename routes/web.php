@@ -63,6 +63,7 @@ Route::resource('saledetails', SaleDetailController::class);
 
 
 
+
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->middleware('CustomAuth')->name('home');
 Route::get('admin/home', [HomeController::class, 'adminHome'])->name('admin.home')->middleware('is_admin');
 Route::get('home', [FrontController::class, 'home'])->name('home');

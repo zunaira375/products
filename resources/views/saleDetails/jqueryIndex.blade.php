@@ -24,6 +24,8 @@
 
 <body>
 
+
+
     @section('content')
         <!--alert -->
         @if ($message = Session::get('success'))
@@ -35,16 +37,15 @@
         <header>
             <!--- NavBar-->
 
-
         </header>
         <!--end of header-->
 
         <div class="container" style="display:inline block;">
 
-            <h3 style="color: green;text-align:center;"><strong>CRUD using JAVASCRIPT In Table</strong>
+            <h3 style="color: green;text-align:center;"><strong>CRUD using JQuery In Table</strong>
             </h3><br>
-            <form action="" onsubmit="event.preventDefault();onFormSubmit();" autocomplete="off" id="editform"
-                target="frame" enctype="multipart/form-data" method="POST">
+
+            <form action="" id="editform" target="frame" enctype="multipart/form-data" method="POST">
                 @csrf
                 <input type="hidden" name="id" id="id" value="{{ $saleDetail->id ?? '' }}" />
 
@@ -73,8 +74,9 @@
                 <div class="container" style="display:inline-block;float:right">
 
                     <div class="container col-md-6" style="float:right;diplay:inline;margin-top:22px;">
-                        <table id="tbl1" class="table table-bordered" style="table-layout: fixed;">
+                        <table id="tbl1" class="table table-bordered">
                             <thead class="bg-success text-white">
+
                                 <tr>
                                     <th>Product</th>
                                     <th>Quantity</th>
@@ -115,9 +117,7 @@
                             class="form-control" placeholder="Price">
                         <br>
                         <div style="text-align: center">
-
-
-                            <button id="updateButton" onclick="productUpdate();" class="btn btn-success"
+                            <button type="submit" id="btnAdd" class="btn btn-success"
                                 style="margin:20px;width:80px;align:center;">Add</button>
                         </div>
 
@@ -147,100 +147,85 @@
             </table>
 
         </div>
-
     </body>
 
     <script type="text/javascript">
-        function productAddToTable() {
-            // First check if a <tbody> tag exists, add one if not
-            if ($("#tbl1 tbody").length == 0) {
-                $("#tbl1").append("<tbody></tbody>");
+        $('#btnAdd').on('click', function() {
+
+            // var id = $('#id').val();
+            // var date = $('#date').val();
+            // var sale_master_id = $('#sale_master_id').val();
+            var product_id = $('#product_id').val();
+            var quantity = $('#quantity').val();
+            var price = $('#price').val();
+            var total = quantity * price;
+
+            if (product_id != "" && quantity != "" && price != "" && total != "") {
+                $('#tbl1 tbody').append('<tr data-product_id= "' + product_id + '" data_quantity="' + quantity +
+                    '" data_price="' + price + '" data_total="' + total + '" class="child"><td>' + product_id +
+                    '</td><td>' + quantity + '</td><td>' + price +
+                    '</td><td>' + total +
+                    '</td><td  ><a style="width:60px;" onClick="btnEdit(this)" class="btn btn-primary btn-sm btnEdit text-white">Edit</a>.<button class="btn btn-danger  btn-sm btnDelete">Delete</button></td></tr>'
+                );
             }
 
-            // Append product to the table
-            $("#tbl1 tbody").append("<tr>" +
-                "<td>" + $("#product_id").val() + "</td>" +
-                "<td>" + $("#quantity").val() + "</td>" +
-                "<td>" + $("#price").val() + "</td>" +
-                "<td>" + $("#quantity").val() * $("#price").val() + "</td>" +
-                "<td>" +
-                "<a style='width:60px;'' onclick='detailDisplay(this);' class='btn btn-primary btn-sm btnEdit text-white'>Edit</a>.<button  onclick='btnDelete(this);' class='btn btn-danger  btn-sm btnDelete'>Delete</button> " +
-                "</td>" +
-                "</tr>");
-        }
+        });
 
-
-        function formClear() {
-            $("#product_id").val("");
-            $("#quantity").val("");
-            $("#price").val("");
-        }
-
-        function btnDelete(ctl) {
+        //*
+        $("#tbl1").on('click', '.btnDelete', function() {
             alert("Are You sure want to delete ?");
-            $(ctl).parents("tr").remove();
-        }
-
-        // Current product being edited
-        var _row = null;
-        _row = $(ctl).parents("tr");
-        var cols = _row.children("td");
-
-        function detailDisplay(ctl) {
-            _row = $(ctl).parents("tr");
-            var cols = _row.children("td");
-            $("#product_id").val($(cols[0]).text());
-            $("#quantity").val($(cols[1]).text());
-            $("#price").val($(cols[2]).text());
-
-            // Change Update Button Text
-            $("#updateButton").text("Update");
-        }
-
-        function productUpdate() {
-            if ($("#updateButton").text() == "Update") {
-                productUpdateInTable();
-            } else {
-                productAddToTable()
-            }
-
-            // Clear form fields
-            formClear();
-
-            // Focus to product name field
-            // $("#product_id").focus();
-        }
-
-        function productBuildTableRow(id) {
-            var ret = "<tr>" +
-                "<td>" + $("#product_id").val() + "</td>" +
-                "<td>" + $("#quantity").val() + "</td>" +
-                "<td>" + $("#price").val() + "</td>" +
-                "<td>" + $("#quantity").val() * $("#price").val() + "</td>" +
-                "<td>" +
-                "<a style='width:60px;'' onclick='detailDisplay(this);' class='btn btn-primary btn-sm btnEdit text-white'>Edit</a>.<button  onclick='btnDelete(this);' class='btn btn-danger  btn-sm btnDelete'>Delete</button> " +
-                "</td>" +
-                "</tr>"
-
-            return ret;
-        }
+            $(this).closest('tr').remove();
+        });
 
 
+        $('#editform').on('click', '.btnEdit', function() {
 
-        function productUpdateInTable() {
-            // Add changed product to table
-            $(_row).after(productBuildTableRow());
 
-            // Remove old product row
-            $(_row).remove();
+            var product = $(this).parents('tr').attr('data-product_id');
+            var quantity = $(this).parents('tr').attr('data_quantity');
+            var price = $(this).parents('tr').attr('data_price');
+            var total = $(this).parents('tr').attr('data_total');
 
-            // Clear form fields
-            formClear();
 
-            // Change Update Button Text
-            $("#updateButton").text("Add");
-        }
+            $(this).parents('tr').find('td:eq(0)').html("<input name='product_id' value='" + product +
+                "' size='9' width=50px; >");
+            $(this).parents('tr').find('td:eq(1)').html("<input name='quantity' value='" + quantity +
+                "' size='9'  maxlength='10'>");
+            $(this).parents('tr').find('td:eq(2)').html("<input name='price' value='" + price +
+                "' size='9'  maxlength='10'  >");
+            $(this).parents('tr').find('td:eq(3)').html("<input name='total' value='" + quantity * price +
+                "' size='9'  maxlength='10' readonly >");
+
+
+            $(this).parents('tr').find('td:eq(4)').prepend(
+                "<button style='display:inline-block;' type='button' class='btn btn-primary  btn-sm btn_update mr-3'>Update</button>"
+            );
+            $(this).hide()
+        });
+
+        $('#editform').on('click', '.btn_update', function() {
+            var product = $(this).parents('tr').find("input[name='product_id']").val();
+            var quantity = $(this).parents('tr').find("input[name='quantity']").val();
+            var price = $(this).parents('tr').find("input[name='price']").val();
+            var total = $(this).parents('tr').find("input[name='total']").val(quantity * price);
+
+            $(this).parents('tr').find('td:eq(0)').text(product);
+            $(this).parents('tr').find('td:eq(1)').text(quantity);
+            $(this).parents('tr').find('td:eq(2)').text(price);
+            $(this).parents('tr').find('td:eq(3)').text(quantity * price);
+
+            $(this).parents('tr').attr('data-product_id', product);
+            $(this).parents('tr').attr('data_quantity', quantity);
+            $(this).parents('tr').attr('data_price', price);
+            $(this).parents('tr').attr('data_total', quantity * price);
+
+            $(this).parents('tr').find('.btnEdit').show();
+            $(this).parents('tr').find('.btn_update').remove();
+
+
+        })
     </script>
+
 
     </html>
 @endsection
