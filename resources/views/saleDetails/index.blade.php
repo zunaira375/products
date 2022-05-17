@@ -67,14 +67,14 @@
                 <div class="container" style="display:inline-block;float:right">
 
                     <div class="container col-md-6" style="float:right;diplay:inline;margin-top:22px;">
-                        <table id="tbl1" class="table table-bordered" >
+                        <table id="tbl1" class="table table-bordered">
                             <thead class="bg-success text-white">
                                 <tr>
                                     <th>Product</th>
                                     <th>Quantity</th>
                                     <th>Price</th>
                                     <th>total </th>
-                                    <th width="150px;" >Action</th>
+                                    <th width="150px;">Action</th>
                                 </tr>
                             </thead>
 
@@ -143,7 +143,7 @@
 
     <script type="text/javascript">
         $('#btnAdd').on('click', function() {
-           
+
             // var id = $('#id').val();
             // var date = $('#date').val();
             // var sale_master_id = $('#sale_master_id').val();
@@ -157,7 +157,7 @@
                     '" data_price="' + price + '" data_total="' + total + '" class="child"><td>' + product_id +
                     '</td><td>' + quantity + '</td><td>' + price +
                     '</td><td>' + total +
-                    '</td><td ><a style="width:60px;" onClick="btnEdit(this)" class="btn btn-primary btn-sm btnEdit text-white">Edit</a>.<button class="btn btn-danger btn-sm btnDelete">Delete</button></td></tr>'
+                    '</td><td  ><a style="width:60px;" onClick="btnEdit(this)" class="btn btn-primary btn-sm btnEdit text-white">Edit</a>.<button class="btn btn-danger  btn-sm btnDelete">Delete</button></td></tr>'
                 );
             }
 
@@ -180,17 +180,17 @@
 
 
             $(this).parents('tr').find('td:eq(0)').html("<input name='product_id' value='" + product +
-                "' size='9'  >");
+                "' size='9' width=50px; >");
             $(this).parents('tr').find('td:eq(1)').html("<input name='quantity' value='" + quantity +
                 "' size='9'  maxlength='10'>");
             $(this).parents('tr').find('td:eq(2)').html("<input name='price' value='" + price +
                 "' size='9'  maxlength='10'  >");
-            $(this).parents('tr').find('td:eq(3)').html("<input name='total' value='" + total +
-                "' size='9'  maxlength='10' >");
+            $(this).parents('tr').find('td:eq(3)').html("<input name='total' value='" + quantity * price +
+                "' size='9'  maxlength='10' readonly >");
 
 
             $(this).parents('tr').find('td:eq(4)').prepend(
-                "<button  type='button' class='btn btn-primary btn-sm btn_update mr-3'>Update</button>");
+                "<button style='display:inline-block;' type='button' class='btn btn-primary  btn-sm btn_update mr-3'>Update</button>");
             $(this).hide()
         });
 
@@ -198,17 +198,17 @@
             var product = $(this).parents('tr').find("input[name='product_id']").val();
             var quantity = $(this).parents('tr').find("input[name='quantity']").val();
             var price = $(this).parents('tr').find("input[name='price']").val();
-            var total = $(this).parents('tr').find("input[name='total']").val();
+            var total = $(this).parents('tr').find("input[name='total']").val(quantity * price);
 
             $(this).parents('tr').find('td:eq(0)').text(product);
             $(this).parents('tr').find('td:eq(1)').text(quantity);
             $(this).parents('tr').find('td:eq(2)').text(price);
-            $(this).parents('tr').find('td:eq(3)').text(total);
+            $(this).parents('tr').find('td:eq(3)').text(quantity * price);
 
             $(this).parents('tr').attr('data-product_id', product);
             $(this).parents('tr').attr('data_quantity', quantity);
             $(this).parents('tr').attr('data_price', price);
-            $(this).parents('tr').attr('data_total', total);
+            $(this).parents('tr').attr('data_total', quantity * price);
 
             $(this).parents('tr').find('.btnEdit').show();
             $(this).parents('tr').find('.btn_update').remove();
