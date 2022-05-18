@@ -69,7 +69,11 @@
 
 
                         <li class="nav-item">
-                            <a class="nav-link" href="/saledetails">SaleDetails</a>
+                            <a class="nav-link" href="/saledetails">SaleDetails_JS</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/saledetails/jqueryIndex">SaleDetails_JQ</a>
                         </li>
 
                     </ul>

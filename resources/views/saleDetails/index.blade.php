@@ -12,13 +12,66 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
     <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-        ___scripts_1___ />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
 
+    <style>
+        .btnsave {
+
+            margin: 20px;
+            width: 100px;
+        }
+
+        .btnAdd {
+
+            margin: 20px;
+            width: 80px;
+            align: center;
+        }
+
+        .divContainer {
+
+            display: inline block;
+
+        }
+
+        .h3 {
+
+            color: green;
+            text-align: center;
+        }
+
+        .divDate {
+
+            margin-left: 15px;
+        }
+
+        .containerTbl1 {
+
+            display: inline-block;
+            float: right
+        }
+
+        .btnSaveDiv {
+
+            text-align: center
+        }
+
+        .divLeft {
+
+            float: left;
+
+
+        }
+        .divBtnAdd{
+
+        text-align: center;
+        }
+
+    </style>
 
 </head>
 
@@ -33,30 +86,21 @@
             </div>
         @endif
         <header>
-            <!--- NavBar-->
-
-
         </header>
-        <!--end of header-->
+        <div class="container">
 
-        <div class="container" style="display:inline block;">
-
-            <h3 style="color: green;text-align:center;"><strong>CRUD using JAVASCRIPT In Table</strong>
-            </h3><br>
+            <h3 class="h3"><strong>CRUD using JAVASCRIPT In Table</strong></h3><br>
             <form action="" onsubmit="event.preventDefault();onFormSubmit();" autocomplete="off" id="editform"
                 target="frame" enctype="multipart/form-data" method="POST">
                 @csrf
                 <input type="hidden" name="id" id="id" value="{{ $saleDetail->id ?? '' }}" />
 
-                <div class="form-row " style="margin-left:15px;">
-
+                <div class="form-row divDate">
                     <div class="form-group col-md-4" style="margin-left: 5px;">
                         <strong>Select Date:</strong>
                         <input type="date" name="date" id="date" value="{{ $saleDetail->date ?? '' }}"
                             class="form-control" id="date" placeholder="Date">
                     </div>
-
-
 
                     <div class="form-group col-md-4" style="margin-left: 20px;">
                         <strong>Select Customer:</strong>
@@ -67,13 +111,11 @@
                             @endforeach
                         </select><br>
                     </div>
-
                 </div>
 
-                <div class="container" style="display:inline-block;float:right">
-
+                <div class="container containerTbl1" style="display:inline-block;float:right">
                     <div class="container col-md-6" style="float:right;diplay:inline;margin-top:22px;">
-                        <table id="tbl1" class="table table-bordered" style="table-layout: fixed;">
+                        <table id="products_tbl_1" class="table table-bordered" style="table-layout: fixed;">
                             <thead class="bg-success text-white">
                                 <tr>
                                     <th>Product</th>
@@ -85,18 +127,15 @@
                             </thead>
 
                             <tbody>
-
                             </tbody>
                         </table>
 
-                        <div class="col-lg-12 col-md-12 col-lg-12 text-right" style="text-align: center">
-                            <button type="submit" class="btn btn-success" id="btnSave"
-                                style="margin:20px;width:100px">Save</button>
+                        <div class="col-lg-12 col-md-12 col-lg-12 text-right btnSaveDiv">
+                            <button type="submit" class="btn btn-success btnsave" id="btnSave">Save</button>
+                        </div>
                         </div>
 
-                    </div>
-
-                    <div class="col-xs-12 col-sm-12 col-md-4" style="float: left;">
+                    <div class="col-xs-12 col-sm-12 col-md-4 divLeft">
 
                         <strong>Select Product:</strong>
                         <select class="form-control " name="product_id" id="product_id" required>
@@ -110,27 +149,22 @@
                         <input type="integer" name="quantity" id="quantity" value="{{ $saleDetail->quantity ?? '' }}"
                             class="form-control" placeholder="Qunatity">
                         <br>
+
                         <strong>Price:</strong>
                         <input type="integer" name="price" id="price" value="{{ $saleDetail->price ?? '' }}"
                             class="form-control" placeholder="Price">
                         <br>
-                        <div style="text-align: center">
 
-
-                            <button id="updateButton" onclick="productUpdate();" class="btn btn-success"
-                                style="margin:20px;width:80px;align:center;">Add</button>
+                        <div  class="divBtnAdd" >
+                            <button id="updateButton" onclick="productUpdate();" class="btn btn-success btnAdd">Add</button>
                         </div>
-
-
-
                     </div>
-
             </form>
 
             <iframe name="frame" style=" display: none;"></iframe>
 
             {{-- //SeconD table --}}
-            <table id="tbl2" class="table table-bordered">
+            <table id="products_tbl_2" class="table table-bordered">
                 <thead class="bg-success text-white">
                     <tr>
                         <th>No.</th>
@@ -140,9 +174,7 @@
                         <th width="280px">Action</th>
                     </tr>
                 </thead>
-
                 <tbody>
-
                 </tbody>
             </table>
 
@@ -153,12 +185,12 @@
     <script type="text/javascript">
         function productAddToTable() {
             // First check if a <tbody> tag exists, add one if not
-            if ($("#tbl1 tbody").length == 0) {
-                $("#tbl1").append("<tbody></tbody>");
+            if ($("#products_tbl_1 tbody").length == 0) {
+                $("#products_tbl_1").append("<tbody></tbody>");
             }
 
             // Append product to the table
-            $("#tbl1 tbody").append("<tr>" +
+            $("#products_tbl_1 tbody").append("<tr>" +
                 "<td>" + $("#product_id").val() + "</td>" +
                 "<td>" + $("#quantity").val() + "</td>" +
                 "<td>" + $("#price").val() + "</td>" +
@@ -168,7 +200,6 @@
                 "</td>" +
                 "</tr>");
         }
-
 
         function formClear() {
             $("#product_id").val("");
@@ -224,8 +255,6 @@
 
             return ret;
         }
-
-
 
         function productUpdateInTable() {
             // Add changed product to table
