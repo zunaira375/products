@@ -6,9 +6,21 @@ use App\Models\SaleDetail;
 use App\Models\Customer;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SaleDetailController extends Controller
 {
+
+    //
+    function addData(Request $request)
+    {
+        $saleDetail = new SaleDetail();
+        $saleDetail->product_id = $request->product_id;
+        $saleDetail->quantity = $request->quantity;
+        $saleDetail->price = $request->price;
+        $saleDetail->save();
+        return redirect('saledetails');
+    }
 
     public function index(Request $request)
 
@@ -41,14 +53,18 @@ class SaleDetailController extends Controller
             ->with('success', 'Sale Details has been added successfully!');
     }
 
+
+
     public function show(SaleDetail $saleDetail)
     {
         $customers = Customer::with('sale_details')->get();
 
         $products = Product::with('sale_details')->get();
 
-        return view('saledetails.jqueryIndex', compact('saleDetail', 'customers', 'products'));
+        return view('saledetails.javascriptIndex', compact('saleDetail', 'customers', 'products'));
     }
+
+
 
     /**
      * Remove the specified resource from storage.
