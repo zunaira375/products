@@ -191,10 +191,11 @@
                 // console.log("helooo");
                 var data = {
                     'date': $('#date').val(),
+                     'quantity': $('#quantity').val(),
+                      'price': $('#price').val(),
+                      'product_id': $('#product_id').val(),
                     'sale_master_id': $('#sale_master_id').val(),
-                    'product_id': $('#product_id').val(),
-                    'quantity': $('#quantity').val(),
-                    'price': $('#price').val(),
+
                 }
 
                 $.ajaxSetup({
@@ -212,16 +213,19 @@
 
                         console.log(response.errors.name);
                         if (response.status == 400) {
-                            $('#saveform_errorList').html("");
-                            $('#saveform_errorList').addClass('alert alert-danger');
+                            $('#save_msgList').html("");
+                            $('#save_msgList').addClass('alert alert-danger');
+                            $.each(response.errors, function (key, err_value) {
+                            $('#save_msgList').append('<li>' + err_value + '</li>');
+                        });
                             $.each(response.errors, function(key, error_values) {
-                                $('#saveform_errorList').append('<li>' + error_values +
+                                $('#save_msgList').append('<li>' + error_values +
                                     '</li>');
 
                             });
                         }
                         else{
-                            $('#saveform_errorList').html("");
+                            $('#save_msgList').html("");
                             $('#success_message').addClass('alert alert-success')
                             $('#success_message').text(response.message)
                             $('#editform').modal('hide');
