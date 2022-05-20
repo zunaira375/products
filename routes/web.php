@@ -16,6 +16,7 @@ use App\Http\Controllers\SaleDetailController;
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\FrontController;
+use App\Models\SaleDetail;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -34,6 +35,8 @@ use Illuminate\Support\Facades\Auth;
 Route::get('/', function () {
     return view('welcome');
 });
+
+
 //one-to-one relationship
 Route::get('add-customer', [CustomerController::class, 'add_customer']);
 Route::get('show-mobile/{id}', [CustomerController::class, 'show_mobile']);
@@ -59,12 +62,14 @@ Route::resource('items', ItemController::class)->middleware('CustomAuth');
 Route::resource('customers', CustomerController::class)->middleware('CustomAuth');
 Route::resource('vendors', VendorController::class)->middleware('CustomAuth');
 Route::resource('salemasters', SaleMasterController::class)->middleware('CustomAuth');
-Route::resource('saledetails', SaleDetailController::class);
-
-
+// Route::resource('saledetails', SaleDetailController::class);
 
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->middleware('CustomAuth')->name('home');
 Route::get('admin/home', [HomeController::class, 'adminHome'])->name('admin.home')->middleware('is_admin');
 Route::get('home', [FrontController::class, 'home'])->name('home');
 Route::get('about-us', [FrontController::class, 'aboutUs'])->name('about.us');
+
+
+Route::get('saledetails', [SaleDetailController::class, 'index']);
+Route::post('saledetails', [SaleDetailController::class, 'store']);
