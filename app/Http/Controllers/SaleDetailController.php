@@ -7,6 +7,7 @@ use App\Models\Customer;
 use App\Models\Product;
 use App\Models\SaleMaster;
 use Illuminate\Http\Request;
+use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
@@ -20,12 +21,15 @@ class SaleDetailController extends Controller
     public function index(Request $request)
 
     {
-
         $customers = Customer::with('sale_details')->get();
 
         $products = Product::with('sale_details')->get();
 
-        return view('saledetails.index', compact('customers', 'products'))
+
+        $salemasters = SaleMaster::get();
+
+
+        return view('saledetails.index', compact('customers', 'products', 'salemasters'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -41,19 +45,28 @@ class SaleDetailController extends Controller
 
         ]);
 
+        //  REMOVE table created by PHP
+
+        // Check in the session weather sale_master_id exist or not
+        // If exist grab sale_master_id from session and make insertion only into sale_details_table
+        // if sale_master_id not exist in the session then insert data into both tables (sale_masters and sale_details tables)
+        // store sale_master_id in session variable called sale_master_id
+
         $salemaster = new SaleMaster();
         $salemaster->date = $request->input('date');
         $salemaster->customer_id = $request->input('sale_master_id');
         $salemaster->save();
-        $id = $request->input('id');
-        $request->session()->put('id', $id);
+        $salemaster->id = $request->input('id');
+        $request->session()->put('id', 'id');
 
-        $saleDetail = new SaleDetail();
-        $saleDetail->quantity = $request->input('quantity');
-        $saleDetail->price = $request->input('price');
-        $saleDetail->product_id = $request->input('product_id');
-        $saleDetail->sale_master_id = $request->input('sale_master_id');
-        $saleDetail->save();
+        if ($request->session()->exists('id')) {
+            $saleDetail = new SaleDetail();
+            $saleDetail->quantity = $request->input('quantity');
+            $saleDetail->price = $request->input('price');
+            $saleDetail->product_id = $request->input('product_id');
+            $saleDetail->sale_master_id = $request->input('sale_master_id');
+            $saleDetail->save();
+        }
 
 
         return response()->json([

@@ -78,6 +78,9 @@
 
 <body>
 
+    <?php
+    //echo "<pre>"; print_r($salemasters->toArray());
+    ?>
     @section('content')
         <!--alert -->
         @if ($message = Session::get('success'))
@@ -91,7 +94,8 @@
         <div class="container">
 
             <h3 class="h3"><strong>CRUD using JAVASCRIPT In Table</strong></h3><br>
-            <form action="saledetails" autocomplete="off" id="editform" target="frame" enctype="multipart/form-data" method="POST">
+            <form action="saledetails" autocomplete="off" id="editform" target="frame" enctype="multipart/form-data"
+                method="POST">
                 @csrf
                 @method('POST')
                 <ul id='#saveform_errorList'></ul>
@@ -129,6 +133,31 @@
                             </thead>
 
                             <tbody>
+                                <!-- Remove this -->
+                                {{-- @foreach ($products as $product)
+                                    <?php
+                                    // echo "<pre>"; print_r($products->toArray()); exit;
+                                    ?>
+
+                                    @if (isset($product->sale_details))
+                                        @foreach ($product->sale_details as $saleDetals)
+                                            <tr>
+                                                <td>{{ $product->name }}</td>
+                                                <td>{{ $saleDetals->quantity }}</td>
+                                                <td>{{ $saleDetals->price }}</td>
+                                                <td>{{ $saleDetals->quantity * $saleDetals->price }}</td>
+                                                <td>
+                                                    <button style='width:60px;' onclick='detailDisplay(this);' class='btn btn-primary  btn-sm btnEdit'>Edit</button>
+                                                    <button  onclick='btnDelete(this);' class='btn btn-danger  btn-sm btnDelete'>Delete</button>
+
+                                                </td>
+
+                                            </tr>
+                                        @endforeach
+                                    @endif
+                                @endforeach --}}
+
+
                             </tbody>
                         </table>
 
@@ -143,7 +172,7 @@
                         <select class="form-control " name="product_id" id="product_id" required>
                             <option value="" disabled selected hidden>Select Product</option>
                             @foreach ($products as $product)
-                                <option value="{{ $product->id }}">{{ $product->name }}</option>
+                                <option value="{{ $product->name }}">{{ $product->name }}</option>
                             @endforeach
                         </select><br>
 
@@ -185,58 +214,64 @@
     </body>
 
     <script type="text/javascript">
-        // $(document).ready(function() {
+        $(document).ready(function() {
 
-        //     $(document).on('click', '.btnAdd', function(e) {
-        //         e.preventDefault();
-        //         // console.log("helooo");
-        //         var data = {
-        //             'date': $('#date').val(),
-        //             'quantity': $('#quantity').val(),
-        //             'price': $('#price').val(),
-        //             'product_id': $('#product_id').val(),
-        //             'sale_master_id': $('#sale_master_id').val(),
+            $(document).on('click', '.btnAdd', function(e) {
+                e.preventDefault();
+               // console.log("helooo");
+                 //debugger;
+                var data = {
+                    'date': $('#date').val(),
+                    'quantity': $('#quantity').val(),
+                    'price': $('#price').val(),
+                    'product_id': $('#product_id').val(),
+                    //'sale_master_id': $('#sale_master_id').val(), // it will be stored in session and will be grabbed from there
 
-        //         }
+                }
 
-        //         $.ajaxSetup({
-        //             headers: {
-        //                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        //             }
-        //         });
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
 
-        //         $.ajax({
-        //             type: "POST",
-        //             url: "/saledetails",
-        //             data: data,
-        //             dataType: "json",
-        //             success: function(response) {
+                $.ajax({
+                    type: "POST",
+                    url: "/saledetails",
+                    data: data,
+                    dataType: "json",
+                    success: function(response) {
+                        if (response.status == 200) {
 
-        //                 console.log(response.errors.name);
-        //                 if (response.status == 400) {
-        //                     $('#save_msgList').html("");
-        //                     $('#save_msgList').addClass('alert alert-danger');
-        //                     $.each(response.errors, function(key, err_value) {
-        //                         $('#save_msgList').append('<li>' + err_value + '</li>');
-        //                     });
-        //                     $.each(response.errors, function(key, error_values) {
-        //                         $('#save_msgList').append('<li>' + error_values +
-        //                             '</li>');
 
-        //                     });
-        //                 } else {
-        //                     $('#save_msgList').html("");
-        //                     $('#success_message').addClass('alert alert-success')
-        //                     $('#success_message').text(response.message)
-        //                     // $('#editform').modal('hide');
-        //                     // $('#editform').find('input').value("");
+                            window.location.reload();
+                        }
 
-        //                 }
-        //             }
-        //         });
+                        console.log(response.errors.name);
+                        if (response.status == 400) {
+                            $('#save_msgList').html("");
+                            $('#save_msgList').addClass('alert alert-danger');
+                            $.each(response.errors, function(key, err_value) {
+                                $('#save_msgList').append('<li>' + err_value + '</li>');
+                            });
+                            $.each(response.errors, function(key, error_values) {
+                                $('#save_msgList').append('<li>' + error_values +
+                                    '</li>');
 
-        //     });
-        // });
+                            });
+                        } else {
+                            $('#save_msgList').html("");
+                            $('#success_message').addClass('alert alert-success')
+                            $('#success_message').text(response.message)
+                            // $('#editform').modal('hide');
+                            // $('#editform').find('input').value("");
+
+                        }
+                    }
+                });
+
+            });
+        });
 
         function productAddToTable() {
             // First check if a <tbody> tag exists, add one if not
