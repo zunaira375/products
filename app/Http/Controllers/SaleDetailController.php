@@ -8,7 +8,7 @@ use App\Models\Product;
 use App\Models\SaleMaster;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Session;
+use Illuminate\Support\Facades\Session;
 
 use Illuminate\Support\Facades\Validator;
 
@@ -31,29 +31,24 @@ class SaleDetailController extends Controller
 
     public function store(Request $request)
     {
-        // $validator = Validator::make($request->all(), [
-        //     'date' => 'required|max:191',
-        //     'sale_master_id' => 'required|max:2',
-        //     'product_id' => 'required|max:10',
-        //     'quantity' => 'required|max:700',
-        //     'price' => 'required|max:400',
 
-        // ]);
-        // if ($validator->fails()) {
-        //     return response()->json([
-        //         'status' => 400,
-        //         'errors' => $validator->messages()
-        //     ]);
-        // } else {
+        $request->validate([
+            'date' => 'required',
+            'sale_master_id' => 'required',
+            'quantity' => 'required',
+            'price' => 'required',
+            'product_id' => 'required',
+
+        ]);
 
         $salemaster = new SaleMaster();
         $salemaster->date = $request->input('date');
         $salemaster->customer_id = $request->input('sale_master_id');
         $salemaster->save();
+        $id = $request->input('id');
+        $request->session()->put('id', $id);
 
-
-
-        $saleDetail  = new SaleDetail();
+        $saleDetail = new SaleDetail();
         $saleDetail->quantity = $request->input('quantity');
         $saleDetail->price = $request->input('price');
         $saleDetail->product_id = $request->input('product_id');
@@ -66,7 +61,6 @@ class SaleDetailController extends Controller
             'message' => 'details has been added successfully!',
         ]);
     }
-
 
     public function create()
     {
@@ -90,9 +84,9 @@ class SaleDetailController extends Controller
      * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(SaleDetail $saleDetail)
     {
-        $id->delete();
+        $saleDetail->delete();
 
         return redirect()->route('saledetails.index')
             ->with('success', 'Sale Details has been deleted successfully');

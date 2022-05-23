@@ -91,8 +91,9 @@
         <div class="container">
 
             <h3 class="h3"><strong>CRUD using JAVASCRIPT In Table</strong></h3><br>
-            <form action="" autocomplete="off" id="editform" target="frame" enctype="multipart/form-data" method="POST">
+            <form action="saledetails" autocomplete="off" id="editform" target="frame" enctype="multipart/form-data" method="POST">
                 @csrf
+                @method('POST')
                 <ul id='#saveform_errorList'></ul>
                 <input type="hidden" name="id" id="id" value="{{ $saleDetail->id ?? '' }}" />
 
@@ -142,17 +143,17 @@
                         <select class="form-control " name="product_id" id="product_id" required>
                             <option value="" disabled selected hidden>Select Product</option>
                             @foreach ($products as $product)
-                                <option value="{{ $product->name }}">{{ $product->name }}</option>
+                                <option value="{{ $product->id }}">{{ $product->name }}</option>
                             @endforeach
                         </select><br>
 
                         <strong>Quantity:</strong>
-                        <input type="integer" name="quantity" id="quantity" value="{{ $saleDetail->quantity ?? '' }}"
+                        <input type="number" name="quantity" id="quantity" value="{{ $saleDetail->quantity ?? '' }}"
                             class="form-control" placeholder="Qunatity">
                         <br>
 
                         <strong>Price:</strong>
-                        <input type="integer" name="price" id="price" value="{{ $saleDetail->price ?? '' }}"
+                        <input type="number" name="price" id="price" value="{{ $saleDetail->price ?? '' }}"
                             class="form-control" placeholder="Price">
                         <br>
 
@@ -184,59 +185,59 @@
     </body>
 
     <script type="text/javascript">
-        $(document).ready(function() {
+        // $(document).ready(function() {
 
-            $(document).on('click', '.btnAdd', function(e) {
-                e.preventDefault();
-                // console.log("helooo");
-                var data = {
-                    'date': $('#date').val(),
-                     'quantity': $('#quantity').val(),
-                      'price': $('#price').val(),
-                      'product_id': $('#product_id').val(),
-                    'sale_master_id': $('#sale_master_id').val(),
+        //     $(document).on('click', '.btnAdd', function(e) {
+        //         e.preventDefault();
+        //         // console.log("helooo");
+        //         var data = {
+        //             'date': $('#date').val(),
+        //             'quantity': $('#quantity').val(),
+        //             'price': $('#price').val(),
+        //             'product_id': $('#product_id').val(),
+        //             'sale_master_id': $('#sale_master_id').val(),
 
-                }
+        //         }
 
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
+        //         $.ajaxSetup({
+        //             headers: {
+        //                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        //             }
+        //         });
 
-                $.ajax({
-                    type: "POST",
-                    url: "/saledetails",
-                    data: data,
-                    dataType: "json",
-                    success: function(response) {
+        //         $.ajax({
+        //             type: "POST",
+        //             url: "/saledetails",
+        //             data: data,
+        //             dataType: "json",
+        //             success: function(response) {
 
-                        console.log(response.errors.name);
-                        if (response.status == 400) {
-                            $('#save_msgList').html("");
-                            $('#save_msgList').addClass('alert alert-danger');
-                            $.each(response.errors, function (key, err_value) {
-                            $('#save_msgList').append('<li>' + err_value + '</li>');
-                        });
-                            $.each(response.errors, function(key, error_values) {
-                                $('#save_msgList').append('<li>' + error_values +
-                                    '</li>');
+        //                 console.log(response.errors.name);
+        //                 if (response.status == 400) {
+        //                     $('#save_msgList').html("");
+        //                     $('#save_msgList').addClass('alert alert-danger');
+        //                     $.each(response.errors, function(key, err_value) {
+        //                         $('#save_msgList').append('<li>' + err_value + '</li>');
+        //                     });
+        //                     $.each(response.errors, function(key, error_values) {
+        //                         $('#save_msgList').append('<li>' + error_values +
+        //                             '</li>');
 
-                            });
-                        }
-                        else{
-                            $('#save_msgList').html("");
-                            $('#success_message').addClass('alert alert-success')
-                            $('#success_message').text(response.message)
-                            $('#editform').modal('hide');
-                            $('#editform').find('input').value("");
+        //                     });
+        //                 } else {
+        //                     $('#save_msgList').html("");
+        //                     $('#success_message').addClass('alert alert-success')
+        //                     $('#success_message').text(response.message)
+        //                     // $('#editform').modal('hide');
+        //                     // $('#editform').find('input').value("");
 
-                        }
-                    }
-                });
+        //                 }
+        //             }
+        //         });
 
-            });
-        });
+        //     });
+        // });
+
         function productAddToTable() {
             // First check if a <tbody> tag exists, add one if not
             if ($("#products_tbl_1 tbody").length == 0) {
@@ -290,7 +291,7 @@
             }
 
             // Clear form fields
-            formClear();
+            // formClear();
 
             // Focus to product name field
             // $("#product_id").focus();
