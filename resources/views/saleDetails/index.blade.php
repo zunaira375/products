@@ -8,8 +8,7 @@
     <title>sales Details</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">;
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
     <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
@@ -172,7 +171,7 @@
                         <select class="form-control " name="product_id" id="product_id" required>
                             <option value="" disabled selected hidden>Select Product</option>
                             @foreach ($products as $product)
-                                <option value="{{ $product->name }}">{{ $product->name }}</option>
+                                <option value="{{ $product->id }}">{{ $product->name }}</option>
                             @endforeach
                         </select><br>
 
@@ -225,7 +224,7 @@
                     'quantity': $('#quantity').val(),
                     'price': $('#price').val(),
                     'product_id': $('#product_id').val(),
-                    //'sale_master_id': $('#sale_master_id').val(), // it will be stored in session and will be grabbed from there
+                    'sale_master_id': $('#sale_master_id').val(), // it will be stored in session and will be grabbed from there
 
                 }
 
@@ -241,11 +240,11 @@
                     data: data,
                     dataType: "json",
                     success: function(response) {
-                        if (response.status == 200) {
+                        // if (response.status == 200) {
 
 
-                            window.location.reload();
-                        }
+                        //     window.location.reload();
+                        // }
 
                         console.log(response.errors.name);
                         if (response.status == 400) {

@@ -45,34 +45,47 @@ class SaleDetailController extends Controller
 
         ]);
 
-        //  REMOVE table created by PHP
+        $session_id = session()->getId();
+        if ($saleDetail = SaleDetail::find($session_id)) {
+            //  REMOVE table created by PHP
 
-        // Check in the session weather sale_master_id exist or not
-        // If exist grab sale_master_id from session and make insertion only into sale_details_table
-        // if sale_master_id not exist in the session then insert data into both tables (sale_masters and sale_details tables)
-        // store sale_master_id in session variable called sale_master_id
+            // Check in the session weather sale_master_id exist or not
+            // If exist grab sale_master_id from session and make insertion only into sale_details_table
+            // if sale_master_id not exist in the session then insert data into both tables (sale_masters and sale_details tables)
+            // store sale_master_id in session variable called sale_master_id
 
-        $salemaster = new SaleMaster();
-        $salemaster->date = $request->input('date');
-        $salemaster->customer_id = $request->input('sale_master_id');
-        $salemaster->save();
-        $salemaster->id = $request->input('id');
-        $request->session()->put('id', 'id');
-
-        if ($request->session()->exists('id')) {
             $saleDetail = new SaleDetail();
             $saleDetail->quantity = $request->input('quantity');
             $saleDetail->price = $request->input('price');
             $saleDetail->product_id = $request->input('product_id');
             $saleDetail->sale_master_id = $request->input('sale_master_id');
             $saleDetail->save();
+
+            return response()->json([
+                'status' => 400,
+                'message' => 'details has been added in only Sale_Details successfully!',
+            ]);
+        } else {
+
+            $salemaster = new SaleMaster();
+            $salemaster->date = $request->input('date');
+            $salemaster->customer_id = $request->input('sale_master_id');
+            $salemaster->save();
+            $sale_master_id = $request->input('id');
+            $request->session()->put('id', $sale_master_id);
+
+            $saleDetail = new SaleDetail();
+            $saleDetail->quantity = $request->input('quantity');
+            $saleDetail->price = $request->input('price');
+            $saleDetail->product_id = $request->input('product_id');
+            $saleDetail->sale_master_id = $request->input('sale_master_id');
+            $saleDetail->save();
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'data has been added in Both Tables successfully!',
+            ]);
         }
-
-
-        return response()->json([
-            'status' => 200,
-            'message' => 'details has been added successfully!',
-        ]);
     }
 
     public function create()
